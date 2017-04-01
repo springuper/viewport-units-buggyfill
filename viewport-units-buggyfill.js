@@ -33,6 +33,7 @@
   var isBuggyIE = /MSIE [0-9]\./i.test(userAgent);
   var isOldIE = /MSIE [0-8]\./i.test(userAgent);
   var isOperaMini = userAgent.indexOf('Opera Mini') > -1;
+  var isOperaPresto = userAgent.indexOf('Opera') > -1 && userAgent.indexOf('Presto') > -1;
 
   var isMobileSafari = /(iPhone|iPod|iPad).+AppleWebKit/i.test(userAgent) && (function() {
     // Regexp for iOS-version tested against the following userAgent strings:
@@ -140,7 +141,7 @@
       isBuggyIE = false;
     }
 
-    if (isOldIE || (!options.force && !isMobileSafari && !isBuggyIE && !isBadStockAndroid && !isOperaMini && (!options.hacks || !options.hacks.required(options)))) {
+    if (isOldIE || (!options.force && !isMobileSafari && !isBuggyIE && !isBadStockAndroid && !isOperaMini && !isOperaPresto && (!options.hacks || !options.hacks.required(options)))) {
       // this buggyfill only applies to mobile safari, IE9-10 and the Stock Android Browser.
       if (window.console && isOldIE) {
         console.info('viewport-units-buggyfill requires a proper CSSOM and basic viewport unit support, which are not available in IE8 and below');
@@ -343,7 +344,7 @@
     // Opera Mini messes up on the content hack (it replaces the DOM node's innerHTML with the value).
     // This fixes it. We test for Opera Mini only since it is the most expensive CSS selector
     // see https://developer.mozilla.org/en-US/docs/Web/CSS/Universal_selectors
-    if (isOperaMini) {
+    if (isOperaMini || isOperaPresto) {
       css.push('* { content: normal !important; }');
     }
 
