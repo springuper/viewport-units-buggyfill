@@ -20,7 +20,7 @@
   }
 }(this, function() {
   'use strict';
-  /* global document, window, navigator, location, XMLHttpRequest, XDomainRequest, CustomEvent */
+  /* global document, window, navigator, location, XMLHttpRequest, XDomainRequest */
 
   var initialized = false;
   var options;
@@ -71,28 +71,6 @@
   // http://caniuse.com/#feat=viewport-units
   if (!isBuggyIE) {
     isBuggyIE = !!navigator.userAgent.match(/MSIE 10\.|Trident.*rv[ :]*1[01]\.| Edge\/1\d\./);
-  }
-
-  // Polyfill for creating CustomEvents on IE9/10/11
-  // from https://github.com/krambuhl/custom-event-polyfill
-  try {
-    // eslint-disable-next-line no-new, no-use-before-define
-    new CustomEvent('test');
-  } catch (e) {
-    var CustomEvent = function(event, params) {
-      var evt;
-      params = params || {
-        bubbles: false,
-        cancelable: false,
-        detail: undefined,
-      };
-
-      evt = document.createEvent('CustomEvent');
-      evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-      return evt;
-    };
-    CustomEvent.prototype = window.Event.prototype;
-    window.CustomEvent = CustomEvent; // expose definition to window
   }
 
   function debounce(func, wait) {
@@ -152,9 +130,6 @@
       };
     }
 
-    // fire a custom event that buggyfill was initialize
-    window.dispatchEvent(new CustomEvent('viewport-units-buggyfill-init'));
-
     options.hacks && options.hacks.initialize(options);
 
     initialized = true;
@@ -187,8 +162,6 @@
     styleNode.textContent = getReplacedViewportUnits();
     // move to the end in case inline <style>s were added dynamically
     styleNode.parentNode.appendChild(styleNode);
-    // fire a custom event that styles were updated
-    window.dispatchEvent(new CustomEvent('viewport-units-buggyfill-style'));
   }
 
   function refresh() {
