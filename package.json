@@ -1,5 +1,5 @@
 {
-  "name": "viewport-units-buggyfill2",
+  "name": "@tubitv/viewport-units-buggyfill",
   "version": "0.6.3",
   "title": "Viewport Units Buggyfill for Mobile Safari",
   "description": "Making viewport units (vh|vw|vmin|vmax) work properly in older WebKit and Trident",
