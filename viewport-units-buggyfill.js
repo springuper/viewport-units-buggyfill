@@ -155,6 +155,8 @@
       options.hacks && options.hacks.initializeEvents(options, refresh, _refresh);
 
       refresh();
+
+      options.callback && options.callback();
     });
   }
 
